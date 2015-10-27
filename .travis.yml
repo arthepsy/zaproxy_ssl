@@ -4,5 +4,5 @@ jdk:
   - oraclejdk8
 
 before_install:
-  - cd ./libs && sh install.sh
+  - sh ./libs/install.sh
 
