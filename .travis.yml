@@ -6,3 +6,5 @@ jdk:
 before_install:
   - sh ./libs/install.sh
 
+script: mvn verify -B -V
+
