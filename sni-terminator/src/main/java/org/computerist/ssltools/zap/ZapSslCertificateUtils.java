@@ -40,20 +40,15 @@ import java.util.Random;
 import java.util.Vector;
 
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
-import org.bouncycastle.asn1.x509.KeyPurposeId;
-import org.bouncycastle.asn1.x509.KeyUsage;
-import org.bouncycastle.asn1.x509.X509Extension;
+import org.bouncycastle.asn1.x509.*;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 
 /**
  * @author MaWoKi
@@ -104,14 +99,14 @@ class ZapSslCertificateUtils {
 		
 		KeyStore ks = null;
 		try {
-			certGen.addExtension(X509Extension.subjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(pubKey));
+			certGen.addExtension(X509Extension.subjectKeyIdentifier, false, new SubjectKeyIdentifier(pubKey.getEncoded()));
 			certGen.addExtension(X509Extension.basicConstraints, true, new BasicConstraints(true));
 			certGen.addExtension(X509Extension.keyUsage, false, new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature | KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.cRLSign));
 			
-			Vector<DERObject> eku = new Vector<>(3, 1);
-			eku.add(KeyPurposeId.id_kp_serverAuth);
-			eku.add(KeyPurposeId.id_kp_clientAuth);
-			eku.add(KeyPurposeId.anyExtendedKeyUsage);
+			Vector<ASN1Primitive> eku = new Vector<>(3, 1);
+			eku.add(KeyPurposeId.id_kp_serverAuth.toASN1Primitive());
+			eku.add(KeyPurposeId.id_kp_clientAuth.toASN1Primitive());
+			eku.add(KeyPurposeId.anyExtendedKeyUsage.toASN1Primitive());
 			certGen.addExtension(X509Extension.extendedKeyUsage, false, new ExtendedKeyUsage(eku));
  
 			final ContentSigner sigGen = new JcaContentSignerBuilder("SHA1WithRSAEncryption").setProvider("BC").build(privKey);
