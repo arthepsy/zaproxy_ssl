@@ -3,8 +3,6 @@ language: java
 jdk:
   - oraclejdk8
 
-before_install:
-  - sh ./libs/install.sh
-
+install: sh ./libs/install.sh
 script: mvn verify -B -V
 
