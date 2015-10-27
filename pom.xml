@@ -15,8 +15,15 @@
     </modules>
 
     <properties>
+        <zap.plugin.name>sniTerminator</zap.plugin.name>
+        <zap.plugin.state>beta</zap.plugin.state>
+        <zap.plugin.version>4</zap.plugin.version>
+
+        <version.zap>2.4.2</version.zap>
+        <version.log4j>1.2.17</version.log4j>
         <version.commons>1.9</version.commons>
         <version.bouncycastle>1.52</version.bouncycastle>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
