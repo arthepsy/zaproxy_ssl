@@ -11,7 +11,19 @@ This is **SSL termination plugin** for [OWASP Zed Attack Proxy (ZAP)](https://ww
 3. browse for ``sniTerminator-*.zap`` file
 
 ## Usage
-Tools -> Options... -> SNI Terminator
+General configuration
+* configure SSL port: ZAP -> Tools -> Options... -> SNI Terminator
+* configure browser to use proxy or use it as transparent proxy
+
+Root certificate:
+* Generate root certificate: ZAP -> Tools -> Options -> Dynamic SSL Certificates -> Generate
+* Export root certificate: ZAP -> Tools -> Options -> Dynamic SSL Certificates -> Save -> ``owasp_zap_root_ca.cer``
+
+Import certificate in Firefox:
+* open <a href="about:preferences#advanced">about:preferences#advanced</a>
+* follow Certificates -> View Certificates -> Authorities -> Import ... 
+* browse for exported certificate, e.g., ``owasp_zap_root_ca.cer``
+
 
 ## Building
 Install dependencies
