@@ -1,5 +1,6 @@
 # zaproxy_ssl [![build status](https://travis-ci.org/arthepsy/zaproxy_ssl.svg)](https://travis-ci.org/arthepsy/zaproxy_ssl/)
-This is **SSL termination plugin** for [OWASP Zed Attack Proxy (ZAP)](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project).
+This is **SSL/TLS termination plugin** for [OWASP Zed Attack Proxy (ZAP)](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project),
+when it is being used as transparent (man-in-the-middle) proxy. Plugin takes advantage of TLS extension SNI (Server Name Indication).
 
 ## Requirements
 * ZAP 2.4.2+
@@ -36,5 +37,15 @@ mvn package
 ```
 After successful build, plugin will available in: ``sni-terminator-plugin/target/`` directory
 
-## Misc
-If you are using ZAP up till 2.4.0, then use _official_ "SNI Terminator" plugin from Add-on Marketplace.
+## ChangeLog
+### v1.1 (2016-08-08, beta6)
+- change certificate signature algorithm to SHA-256 with RSA encryption
+- integrate pull requests from original sni-terminator (set thread as daemon)
+- integrate changes from zap-extensions (languages, warning fixes)
+
+### v1.0 (2015-10-28, beta4)
+- bump dependency to BouncyCastle 1.52
+- package for single source and single build
+- import sni-terminator extension sources
+- import sni-terminator sources
+
