@@ -7,9 +7,10 @@ when it is being used as transparent (man-in-the-middle) proxy. Plugin takes adv
 * Java 8
 
 ## Installation
-1. open ZAP
-2. File -> Load Add-on file... 
-3. browse for ``sniTerminator-*.zap`` file
+1. build or [download plugin](https://github.com/arthepsy/zaproxy_ssl/releases/latest) 
+2. open ZAP
+3. File -> Load Add-on file... 
+4. browse for ``sniTerminator-*.zap`` file
 
 ## Usage
 General configuration
