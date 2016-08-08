@@ -45,8 +45,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
-import org.bouncycastle.asn1.x509.X509Extension;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -155,9 +155,9 @@ class FixedSslCertificateService {
             System.currentTimeMillis() + 100 * (1000L * 60 * 60 * 24 * 30)),
         namebld.build(), pubKey);
 
-    certGen.addExtension(X509Extension.subjectKeyIdentifier, false,
+    certGen.addExtension(Extension.subjectKeyIdentifier, false,
         new SubjectKeyIdentifier(pubKey.getEncoded()));
-    certGen.addExtension(X509Extension.basicConstraints, false,
+    certGen.addExtension(Extension.basicConstraints, false,
         new BasicConstraints(false));
 
     ContentSigner sigGen;

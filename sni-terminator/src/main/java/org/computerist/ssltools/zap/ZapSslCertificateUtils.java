@@ -37,13 +37,16 @@ import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import java.util.Vector;
 
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.bouncycastle.asn1.x509.*;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.KeyUsage;
+import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
@@ -99,15 +102,15 @@ class ZapSslCertificateUtils {
 		
 		KeyStore ks = null;
 		try {
-			certGen.addExtension(X509Extension.subjectKeyIdentifier, false, new SubjectKeyIdentifier(pubKey.getEncoded()));
-			certGen.addExtension(X509Extension.basicConstraints, true, new BasicConstraints(true));
-			certGen.addExtension(X509Extension.keyUsage, false, new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature | KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.cRLSign));
+			certGen.addExtension(Extension.subjectKeyIdentifier, false, new SubjectKeyIdentifier(pubKey.getEncoded()));
+			certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+			certGen.addExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature | KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.cRLSign));
 			
-			Vector<ASN1Primitive> eku = new Vector<>(3, 1);
-			eku.add(KeyPurposeId.id_kp_serverAuth.toASN1Primitive());
-			eku.add(KeyPurposeId.id_kp_clientAuth.toASN1Primitive());
-			eku.add(KeyPurposeId.anyExtendedKeyUsage.toASN1Primitive());
-			certGen.addExtension(X509Extension.extendedKeyUsage, false, new ExtendedKeyUsage(eku));
+			KeyPurposeId[] eku = {
+					KeyPurposeId.id_kp_serverAuth,
+					KeyPurposeId.id_kp_clientAuth,
+					KeyPurposeId.anyExtendedKeyUsage };
+			certGen.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(eku));
  
 			final ContentSigner sigGen = new JcaContentSignerBuilder("SHA1WithRSAEncryption").setProvider("BC").build(privKey);
 			final X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certGen.build(sigGen));
