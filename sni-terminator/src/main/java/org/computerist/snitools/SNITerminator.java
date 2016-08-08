@@ -119,6 +119,8 @@ public class SNITerminator {
             }
           }
         });
+        serverThread.setDaemon(true);
+        serverThread.setName("SNITerminator");
         serverThread.start();
       }
     } catch (Exception exception) {
