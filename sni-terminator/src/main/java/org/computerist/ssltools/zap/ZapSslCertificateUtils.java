@@ -30,6 +30,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -50,6 +51,7 @@ import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
@@ -79,6 +81,7 @@ class ZapSslCertificateUtils {
 		final KeyPair keypair = g.genKeyPair();
 		final PrivateKey privKey = keypair.getPrivate();
         final PublicKey  pubKey = keypair.getPublic();
+		Security.addProvider(new BouncyCastleProvider());
         Random rnd = new Random();
 
 		// using the hash code of the user's name and home path, keeps anonymity
@@ -112,7 +115,7 @@ class ZapSslCertificateUtils {
 					KeyPurposeId.anyExtendedKeyUsage };
 			certGen.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(eku));
  
-			final ContentSigner sigGen = new JcaContentSignerBuilder("SHA1WithRSAEncryption").setProvider("BC").build(privKey);
+			final ContentSigner sigGen = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC").build(privKey);
 			final X509Certificate cert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(certGen.build(sigGen));
 
 			ks = KeyStore.getInstance(KeyStore.getDefaultType());

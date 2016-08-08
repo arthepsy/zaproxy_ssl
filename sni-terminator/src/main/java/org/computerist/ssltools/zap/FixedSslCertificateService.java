@@ -162,7 +162,7 @@ class FixedSslCertificateService {
 
     ContentSigner sigGen;
     try {
-      sigGen = new JcaContentSignerBuilder("SHA1WithRSAEncryption")
+      sigGen = new JcaContentSignerBuilder("SHA256WithRSAEncryption")
           .setProvider("BC").build(caPrivKey);
     } catch (OperatorCreationException e) {
       throw new CertificateException(e);
